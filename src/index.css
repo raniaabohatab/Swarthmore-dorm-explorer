@@ -1,0 +1,60 @@
+@import "@fontsource/merriweather/index.css";
+@import "@fontsource/inter/index.css";
+
+:root {
+  --garnet: #7c2222;
+  --garnet-dark: #5a1818;
+  --cream: #f8f5f2;
+  --light-grey: #e5e5e5;
+  --soft-black: #232323;
+  --serif: 'Merriweather', Georgia, 'Times New Roman', Times, serif;
+  --sans: 'Inter', 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: var(--sans);
+  background-color: var(--cream);
+  color: var(--soft-black);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--cream);
+  color: var(--soft-black);
+  font-family: var(--sans);
+  overflow-x: hidden;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  color: var(--garnet);
+  margin: 0;
+}
+
+button {
+  font-family: var(--sans);
+  background: var(--garnet);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8em 2em;
+  font-size: 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: var(--garnet-dark);
+}
+
+a {
+  color: var(--garnet);
+  text-decoration: none;
+  font-weight: 500;
+}
+a:hover {
+  text-decoration: underline;
+}
