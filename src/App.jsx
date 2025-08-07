@@ -1127,19 +1127,11 @@ function HomePage() {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/dorms" element={<DormsPage />} />
-          <Route path="/dorms/:slug" element={<DormDetailPage />} />
-          <Route path="/quiz" element={<QuizPage />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<UserProfile />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <div style={{ padding: '2rem', textAlign: 'center', fontFamily: 'Arial, sans-serif' }}>
+      <h1>Swarthmore Dorm Explorer</h1>
+      <p>If you can see this, the app is working!</p>
+      <p>Current time: {new Date().toLocaleString()}</p>
+    </div>
   );
 }
 
