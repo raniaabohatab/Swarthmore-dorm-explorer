@@ -21,6 +21,10 @@ import woolmanImg from './assets/woolman.webp';
 import lodgesImg from './assets/lodges.webp';
 import pprImg from './assets/ppr.webp';
 import { HashRouter as Router, Routes, Route, useNavigate, Link, useParams } from 'react-router-dom';
+import { AuthProvider, useAuth } from './AuthContext';
+import Signup from './components/Signup';
+import Login from './components/Login';
+import UserProfile from './components/UserProfile';
 
 const Nav = styled.nav`
   width: 100vw;
@@ -129,116 +133,100 @@ const QuizExplanation = styled.p`
 
 const dorms = [
   { name: 'Alice Paul', img: aliceImg, slug: 'alice-paul',
-    website: 'https://www.swarthmore.edu/campus-life/alice-paul-hall',
-    coed: 'coed',
     attributes: {
       environment: 'quiet', ac: true, dining: 'close', style: 'modern', room: ['single','double','triple'], gym: 'medium'
-    }
+    },
+    website: 'https://www.swarthmore.edu/campus-life/alice-paul-hall'
   },
   { name: 'Dana', img: danaImg, slug: 'dana',
-    website: 'https://www.swarthmore.edu/campus-life/dana-hall',
-    coed: 'coed (3rd floor women)',
     attributes: {
       environment: 'quiet', ac: false, dining: 'medium', style: 'modern', room: ['single','double'], gym: 'medium'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/dana-hall'
   },
   { name: 'Danawell', img: danawellImg, slug: 'danawell',
-    website: 'https://www.swarthmore.edu/campus-life/danawell',
-    coed: 'coed',
     attributes: {
       environment: 'social', ac: true, dining: 'medium', style: 'modern', room: ['double'], gym: 'medium'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/danawell-hall'
   },
   { name: 'David Kemp', img: davidkempImg, slug: 'david-kemp',
-    website: 'https://www.swarthmore.edu/campus-life/david-kemp-hall',
-    coed: 'coed',
     attributes: {
       environment: 'quiet', ac: true, dining: 'medium', style: 'modern', room: ['single','double','triple'], gym: 'medium'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/david-kemp-hall'
   },
   { name: 'Hallowell', img: hallowellImg, slug: 'hallowell',
-    website: 'https://www.swarthmore.edu/campus-life/hallowell-hall',
-    coed: 'coed',
     attributes: {
       environment: 'quiet', ac: false, dining: 'medium', style: 'modern', room: ['single','double'], gym: 'medium'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/hallowell-hall'
   },
   { name: 'Mary Lyon', img: mlImg, slug: 'mary-lyon',
-    website: 'https://www.swarthmore.edu/campus-life/mary-lyon-hall',
-    coed: 'coed',
     attributes: {
       environment: 'quiet', ac: false, dining: 'far', style: 'historic', room: ['single','double','triple'], gym: 'far'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/mary-lyon-hall'
   },
   { name: 'Palmer', img: palmerImg, slug: 'palmer',
-    website: 'https://www.swarthmore.edu/campus-life/palmer-hall',
-    coed: 'coed',
     attributes: {
       environment: 'quiet', ac: false, dining: 'far', style: 'historic', room: ['single','double'], gym: 'far'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/palmer-hall'
   },
   { name: 'Parrish', img: parrishImgDorm, slug: 'parrish',
-    website: 'https://www.swarthmore.edu/campus-life/parrish-hall',
-    coed: 'mixed',
     attributes: {
       environment: 'quiet', ac: true, dining: 'closest', style: 'historic', room: ['single','double','triple'], gym: 'close'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/parrish-hall'
   },
   { name: 'Pittenger', img: pittingerImg, slug: 'pittenger',
-    website: 'https://www.swarthmore.edu/campus-life/pittenger-hall',
-    coed: 'coed',
     attributes: {
       environment: 'quiet', ac: false, dining: 'far', style: 'historic', room: ['single','double','quint'], gym: 'far'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/pittenger-hall'
   },
   { name: 'Roberts', img: robertsImg, slug: 'roberts',
-    website: 'https://www.swarthmore.edu/campus-life/roberts-hall',
-    coed: 'coed',
     attributes: {
       environment: 'quiet', ac: false, dining: 'far', style: 'historic', room: ['single','double','triple'], gym: 'far'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/roberts-hall'
   },
   { name: 'Wharton', img: whartonImg, slug: 'wharton',
-    website: 'https://www.swarthmore.edu/campus-life/wharton-hall',
-    coed: 'coed',
     attributes: {
       environment: 'social', ac: false, dining: 'close', style: 'historic', room: ['single','double','quad'], gym: 'close'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/wharton-hall'
   },
   { name: 'Willets', img: willetsImg, slug: 'willets',
-    website: 'https://www.swarthmore.edu/campus-life/willets-hall',
-    coed: 'coed',
     attributes: {
       environment: 'social', ac: false, dining: 'close', style: 'modern', room: ['single','double'], gym: 'close'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/willets-hall'
   },
   { name: 'Worth', img: worthImg, slug: 'worth',
-    website: 'https://www.swarthmore.edu/campus-life/worth-hall',
-    coed: 'coed',
     attributes: {
       environment: 'quiet', ac: false, dining: 'medium', style: 'historic', room: ['single','double'], gym: 'medium'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/worth-hall'
   },
   { name: 'Woolman', img: woolmanImg, slug: 'woolman',
-    website: 'https://www.swarthmore.edu/campus-life/woolman-hall',
-    coed: 'coed',
     attributes: {
       environment: 'quiet', ac: true, dining: 'far', style: 'historic', room: ['single','double'], gym: 'far'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/woolman-house'
   },
   { name: 'The Lodges', img: lodgesImg, slug: 'the-lodges',
-    website: 'https://www.swarthmore.edu/campus-life/lodges',
-    coed: 'coed',
     attributes: {
       environment: 'quiet', ac: false, dining: 'far', style: 'historic', room: ['quint'], gym: 'far'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/lodges'
   },
   { name: 'PPR Apartments (includes NPPR)', img: pprImg, slug: 'ppr-apartments',
-    website: 'https://www.swarthmore.edu/campus-life/ppr-apartments',
-    coed: 'coed',
     attributes: {
       environment: 'quiet', ac: true, dining: 'far', style: 'modern', room: ['apartment'], gym: 'far'
-    }
+    },
+    website: 'https://www.swarthmore.edu/living-swarthmore/ppr-apartments'
   },
 ];
 
@@ -376,33 +364,59 @@ const DormCard = styled(Link)`
   align-items: center;
   transition: box-shadow 0.2s;
   text-decoration: none;
+  position: relative;
   &:hover {
     box-shadow: 0 4px 24px rgba(124,34,34,0.16);
   }
 `;
 const DormImg = styled.img`
   width: 100%;
-  height: 160px;
+  height: 200px;
   object-fit: cover;
   background: var(--light-grey);
 `;
 const DormName = styled.div`
   font-family: var(--serif);
   font-size: 1.2rem;
-  color: var(--garnet);
+  color: white;
   font-weight: 600;
-  padding: 1rem 0.5rem;
   text-align: center;
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+`;
+const DormOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(124, 34, 34, 0.3);
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1;
+  ${DormCard}:hover & {
+    opacity: 1;
+  }
 `;
 
 function DormsPage() {
   return (
-    <div style={{ padding: '4rem 2rem', textAlign: 'center', background: 'var(--cream)', minHeight: '100vh' }}>
-      <h2 style={{ fontFamily: 'var(--serif)', color: 'var(--garnet)', fontSize: '2.2rem', marginBottom: '2rem' }}>Explore Dorms</h2>
+    <div style={{ 
+      padding: '4rem 2rem', 
+      textAlign: 'center', 
+      background: 'linear-gradient(to bottom, var(--garnet) 0%, var(--garnet-dark) 50%, #3d0f0f 100%)', 
+      minHeight: '100vh' 
+    }}>
+      <h2 style={{ fontFamily: 'var(--serif)', color: 'white', fontSize: '2.2rem', marginBottom: '2rem' }}>Explore Dorms</h2>
       <DormGrid>
         {dorms.map((dorm) => (
           <DormCard key={dorm.name} to={`/dorms/${dorm.slug}`}>
             <DormImg src={dorm.img} alt={dorm.name} />
+            <DormOverlay />
             <DormName>{dorm.name}</DormName>
           </DormCard>
         ))}
@@ -413,99 +427,485 @@ function DormsPage() {
 
 function DormDetailPage() {
   const { slug } = useParams();
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
   const dorm = dorms.find((d) => d.slug === slug);
+  const [reviews, setReviews] = useState(() => {
+    const saved = localStorage.getItem(`reviews-${slug}`);
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [newReview, setNewReview] = useState({ name: '', rating: '', comment: '' });
+  const [userInteractions, setUserInteractions] = useState(() => {
+    const saved = localStorage.getItem(`interactions-${slug}`);
+    return saved ? JSON.parse(saved) : {};
+  });
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const addReview = (e) => {
+    e.preventDefault();
+    if (!currentUser) {
+      setShowLoginModal(true);
+      return;
+    }
+    if (newReview.comment.trim() && newReview.rating) {
+      const review = {
+        ...newReview,
+        name: currentUser.profile?.username || currentUser.displayName || currentUser.email,
+        rating: parseInt(newReview.rating),
+        id: Date.now(),
+        date: new Date().toLocaleDateString(),
+        userId: currentUser.uid,
+        likes: 0,
+        dislikes: 0,
+        comments: []
+      };
+      const updatedReviews = [...reviews, review];
+      setReviews(updatedReviews);
+      localStorage.setItem(`reviews-${slug}`, JSON.stringify(updatedReviews));
+      setNewReview({ name: '', rating: '', comment: '' });
+    }
+  };
+
+  const deleteReview = (reviewId) => {
+    const updatedReviews = reviews.filter(review => review.id !== reviewId);
+    setReviews(updatedReviews);
+    localStorage.setItem(`reviews-${slug}`, JSON.stringify(updatedReviews));
+    
+    // Remove interactions for deleted review
+    const updatedInteractions = { ...userInteractions };
+    delete updatedInteractions[reviewId];
+    setUserInteractions(updatedInteractions);
+    localStorage.setItem(`interactions-${slug}`, JSON.stringify(updatedInteractions));
+  };
+
+  const handleVote = (reviewId, voteType) => {
+    if (!currentUser) {
+      setShowLoginModal(true);
+      return;
+    }
+    
+    const currentInteraction = userInteractions[reviewId];
+    
+    // If user already voted the same way, remove the vote
+    if (currentInteraction === voteType) {
+      const updatedReviews = reviews.map(review => 
+        review.id === reviewId 
+          ? { ...review, [voteType + 's']: review[voteType + 's'] - 1 }
+          : review
+      );
+      setReviews(updatedReviews);
+      localStorage.setItem(`reviews-${slug}`, JSON.stringify(updatedReviews));
+      
+      const updatedInteractions = { ...userInteractions };
+      delete updatedInteractions[reviewId];
+      setUserInteractions(updatedInteractions);
+      localStorage.setItem(`interactions-${slug}`, JSON.stringify(updatedInteractions));
+      return;
+    }
+    
+    // If user voted differently before, remove previous vote and add new one
+    let updatedReviews = reviews.map(review => {
+      if (review.id === reviewId) {
+        let newReview = { ...review };
+        if (currentInteraction) {
+          newReview[currentInteraction + 's'] = review[currentInteraction + 's'] - 1;
+        }
+        newReview[voteType + 's'] = review[voteType + 's'] + 1;
+        return newReview;
+      }
+      return review;
+    });
+    
+    setReviews(updatedReviews);
+    localStorage.setItem(`reviews-${slug}`, JSON.stringify(updatedReviews));
+    
+    const updatedInteractions = { ...userInteractions, [reviewId]: voteType };
+    setUserInteractions(updatedInteractions);
+    localStorage.setItem(`interactions-${slug}`, JSON.stringify(updatedInteractions));
+  };
+
+
+
   if (!dorm) return <div style={{ padding: '4rem', textAlign: 'center' }}>Dorm not found.</div>;
-  
-  const distances = walkingDistances[slug] || {};
-  const sortedDistances = Object.entries(distances).sort(([,a], [,b]) => a - b);
-  
+
+  const averageRating = reviews.length > 0 
+    ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
+    : 0;
+
   return (
     <div style={{ background: 'var(--cream)', minHeight: '100vh' }}>
-      {/* Banner with dorm image */}
-      <div style={{ width: '100%', maxHeight: 320, overflow: 'hidden', position: 'relative', marginBottom: 32 }}>
-        <img src={dorm.img} alt={dorm.name} style={{ width: '100%', objectFit: 'cover', height: 240, filter: 'brightness(0.92)', borderBottomLeftRadius: 16, borderBottomRightRadius: 16, boxShadow: '0 2px 12px rgba(124,34,34,0.08)' }} />
-        <h2 style={{ position: 'absolute', left: 0, right: 0, bottom: 16, color: '#fff', fontFamily: 'var(--serif)', fontSize: '2.2rem', textShadow: '0 2px 8px rgba(35,35,35,0.18)', margin: 0 }}>{dorm.name}</h2>
+      {/* Horizontal Banner */}
+      <div style={{ 
+        background: `linear-gradient(rgba(124, 34, 34, 0.8), rgba(124, 34, 34, 0.6)), url(${dorm.img})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        height: '300px',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 4rem',
+        marginBottom: '3rem'
+      }}>
+        <h1 style={{ 
+          fontFamily: 'var(--serif)', 
+          color: 'white', 
+          fontSize: '3.5rem', 
+          fontWeight: '700',
+          textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+          margin: 0
+        }}>
+          {dorm.name}
+        </h1>
       </div>
       
-      {/* Button to Swarthmore website */}
-      <div style={{ textAlign: 'center', marginBottom: 32 }}>
-        <a href={dorm.website} target="_blank" rel="noopener noreferrer" style={{ background: 'var(--garnet)', color: '#fff', fontWeight: 700, fontSize: '1.1em', border: 'none', borderRadius: 8, padding: '0.8em 2em', textDecoration: 'none', boxShadow: '0 2px 12px rgba(124,34,34,0.08)', display: 'inline-block', marginTop: 8 }}>
-          Learn more on Swarthmore's website
-        </a>
-      </div>
+      {/* Content */}
+      <div style={{ padding: '0 4rem 4rem 4rem' }}>
       
-      {/* Walking Distances Section */}
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 2rem 4rem 2rem' }}>
-        <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(124,34,34,0.08)', padding: '2rem', marginBottom: '2rem' }}>
-          <h3 style={{ color: 'var(--garnet)', fontFamily: 'var(--serif)', fontSize: '1.5rem', marginBottom: '1.5rem', textAlign: 'center' }}>
-            🚶‍♀️ Walking Distances to Campus Locations
-          </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-            {sortedDistances.map(([location, time]) => (
-              <div key={location} style={{ 
-                background: '#f8f9fa', 
-                padding: '1rem', 
-                borderRadius: 8, 
-                border: '1px solid #e9ecef',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-                <span style={{ fontWeight: 600, color: '#495057' }}>{location}</span>
-                <span style={{ 
-                  background: time <= 3 ? '#d4edda' : time <= 6 ? '#fff3cd' : '#f8d7da',
-                  color: time <= 3 ? '#155724' : time <= 6 ? '#856404' : '#721c24',
-                  padding: '0.25rem 0.75rem',
-                  borderRadius: 20,
-                  fontSize: '0.9rem',
-                  fontWeight: 600
-                }}>
-                  {time} min
-                </span>
-              </div>
-            ))}
-          </div>
-          <div style={{ marginTop: '1.5rem', textAlign: 'center', color: '#6c757d', fontSize: '0.9rem' }}>
-            <p>💡 <strong>Quick tip:</strong> Green = Very close (≤3 min), Yellow = Moderate (4-6 min), Red = Further away (≥7 min)</p>
-          </div>
+      {/* Dorm Attributes */}
+      <div style={{ maxWidth: '600px', margin: '0 auto 3rem auto', background: '#fff', borderRadius: '12px', padding: '2rem', boxShadow: '0 2px 12px rgba(124,34,34,0.08)' }}>
+        <h3 style={{ fontFamily: 'var(--serif)', color: 'var(--garnet)', marginBottom: '1rem' }}>Dorm Features</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', textAlign: 'left', marginBottom: '2rem' }}>
+          <div><strong>Environment:</strong> {dorm.attributes.environment}</div>
+          <div><strong>Air Conditioning:</strong> {dorm.attributes.ac ? 'Yes' : 'No'}</div>
+          <div><strong>Dining Proximity:</strong> {dorm.attributes.dining}</div>
+          <div><strong>Style:</strong> {dorm.attributes.style}</div>
+          <div><strong>Room Types:</strong> {dorm.attributes.room.join(', ')}</div>
+          <div><strong>Gym Proximity:</strong> {dorm.attributes.gym}</div>
         </div>
         
-        {/* Dorm Attributes Section */}
-        <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(124,34,34,0.08)', padding: '2rem' }}>
-          <h3 style={{ color: 'var(--garnet)', fontFamily: 'var(--serif)', fontSize: '1.5rem', marginBottom: '1.5rem', textAlign: 'center' }}>
-            🏠 Dorm Features
-          </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-            <div style={{ textAlign: 'center', padding: '1rem' }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🌡️</div>
-              <div style={{ fontWeight: 600, color: '#495057' }}>Air Conditioning</div>
-              <div style={{ color: dorm.attributes.ac ? '#28a745' : '#dc3545', fontWeight: 600 }}>
-                {dorm.attributes.ac ? 'Yes' : 'No'}
+        {/* Official Website Link */}
+        <div style={{ textAlign: 'center', paddingTop: '1rem', borderTop: '1px solid #eee' }}>
+          <a 
+            href={dorm.website} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ 
+              background: 'var(--garnet)', 
+              color: '#fff', 
+              padding: '0.8em 2em', 
+              borderRadius: '8px', 
+              textDecoration: 'none', 
+              fontWeight: 'bold',
+              display: 'inline-block',
+              transition: 'background 0.2s'
+            }}
+            onMouseOver={(e) => e.target.style.background = 'var(--garnet-dark)'}
+            onMouseOut={(e) => e.target.style.background = 'var(--garnet)'}
+          >
+            Learn More on Swarthmore's Official Website
+          </a>
+        </div>
+      </div>
+
+      {/* Reviews Section */}
+      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+        <h3 style={{ fontFamily: 'var(--serif)', color: 'var(--garnet)', fontSize: '1.8rem', marginBottom: '1rem' }}>
+          Reviews ({reviews.length})
+          {averageRating > 0 && <span style={{ fontSize: '1rem', color: '#666' }}> • Average Rating: {averageRating} stars</span>}
+        </h3>
+
+        {/* Add Review Form */}
+        <form onSubmit={addReview} style={{ background: '#fff', borderRadius: '12px', padding: '2rem', marginBottom: '2rem', boxShadow: '0 2px 12px rgba(124,34,34,0.08)' }}>
+          <h4 style={{ fontFamily: 'var(--serif)', color: 'var(--garnet)', marginBottom: '1rem' }}>
+            Write a Review
+          </h4>
+          <div style={{ display: 'grid', gap: '1rem', maxWidth: '500px', margin: '0 auto' }}>
+            {currentUser && (
+              <div style={{ textAlign: 'center', padding: '0.5rem', background: 'var(--cream)', borderRadius: '8px', color: 'var(--garnet)', fontWeight: '600' }}>
+                Reviewing as: {currentUser.profile?.username || currentUser.displayName || currentUser.email}
               </div>
+            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <label style={{ fontWeight: 'bold' }}>Rating:</label>
+              <select
+                value={newReview.rating}
+                onChange={(e) => setNewReview({...newReview, rating: e.target.value})}
+                onFocus={() => !currentUser && setShowLoginModal(true)}
+                required
+                style={{ padding: '0.5em', borderRadius: '6px', border: '1px solid #ddd' }}
+              >
+                <option value="">Select rating</option>
+                {[5,4,3,2,1].map(num => (
+                  <option key={num} value={num}>{num === 1 ? 'one star' : `${num} stars`}</option>
+                ))}
+              </select>
             </div>
-            <div style={{ textAlign: 'center', padding: '1rem' }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🏢</div>
-              <div style={{ fontWeight: 600, color: '#495057' }}>Building Style</div>
-              <div style={{ color: '#6c757d', textTransform: 'capitalize' }}>
-                {dorm.attributes.style}
-              </div>
+            <textarea
+              placeholder="Share your experience with this dorm..."
+              value={newReview.comment}
+              onChange={(e) => setNewReview({...newReview, comment: e.target.value})}
+              onFocus={() => !currentUser && setShowLoginModal(true)}
+              required
+              rows="4"
+              style={{ padding: '0.8em', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', resize: 'vertical' }}
+            />
+            <button 
+              type="submit" 
+              onClick={() => !currentUser && setShowLoginModal(true)}
+              style={{ background: 'var(--garnet)', color: '#fff', padding: '0.8em 2em', borderRadius: '8px', border: 'none', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer' }}
+            >
+              Submit Review
+            </button>
+          </div>
+        </form>
+
+        {/* Display Reviews */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {reviews.length === 0 ? (
+            <p style={{ color: '#666', fontStyle: 'italic' }}>No reviews yet. Be the first to share your experience!</p>
+          ) : (
+            reviews.map((review) => {
+              const userVote = userInteractions[review.id];
+              return (
+                <div key={review.id} style={{ background: '#fff', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 2px 12px rgba(124,34,34,0.08)', textAlign: 'left' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <h4 style={{ margin: 0, color: 'var(--garnet)' }}>{review.name}</h4>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span>{'★'.repeat(review.rating)}</span>
+                      <span style={{ color: '#666', fontSize: '0.9rem' }}>{review.date}</span>
+                      <button 
+                        onClick={() => deleteReview(review.id)}
+                        style={{ 
+                          background: '#dc3545', 
+                          color: '#fff', 
+                          border: 'none', 
+                          borderRadius: '4px', 
+                          padding: '0.3em 0.6em', 
+                          fontSize: '0.8rem', 
+                          cursor: 'pointer',
+                          marginLeft: '0.5rem'
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                  <p style={{ margin: '0 0 1rem 0', lineHeight: '1.6' }}>{review.comment}</p>
+                  
+                  {/* Like/Dislike Buttons */}
+                  <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                    <button 
+                      onClick={() => handleVote(review.id, 'like')}
+                      style={{ 
+                        background: 'transparent', 
+                        color: userVote === 'like' ? '#28a745' : '#666', 
+                        border: 'none', 
+                        padding: '0.5em 1em', 
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.3rem',
+                        fontSize: '1rem'
+                      }}
+                    >
+                      👍 {review.likes}
+                    </button>
+                    <button 
+                      onClick={() => handleVote(review.id, 'dislike')}
+                      style={{ 
+                        background: 'transparent', 
+                        color: userVote === 'dislike' ? '#dc3545' : '#666', 
+                        border: 'none', 
+                        padding: '0.5em 1em', 
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.3rem',
+                        fontSize: '1rem'
+                      }}
+                    >
+                      👎 {review.dislikes}
+                    </button>
+                  </div>
+
+                  {/* Comments Section */}
+                  <div style={{ borderTop: '1px solid #eee', paddingTop: '1rem' }}>
+                    <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--garnet)' }}>Comments ({review.comments.length})</h5>
+                    {!currentUser && (
+                      <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem', fontStyle: 'italic' }}>
+                        Click on any field below to sign in and add a comment
+                      </p>
+                    )}
+                    
+                    {/* Add Comment Form */}
+                    <form onSubmit={(e) => {
+                      e.preventDefault();
+                      if (!currentUser) {
+                        setShowLoginModal(true);
+                        return;
+                      }
+                      const formData = new FormData(e.target);
+                      const text = formData.get('text');
+                      if (text.trim()) {
+                        const updatedReviews = reviews.map(r => 
+                          r.id === review.id 
+                            ? { 
+                                ...r, 
+                                comments: [...r.comments, {
+                                  id: Date.now(),
+                                  author: currentUser.profile?.username || currentUser.displayName || currentUser.email,
+                                  text: text,
+                                  date: new Date().toLocaleDateString()
+                                }]
+                              } 
+                            : r
+                        );
+                        setReviews(updatedReviews);
+                        localStorage.setItem(`reviews-${slug}`, JSON.stringify(updatedReviews));
+                        e.target.reset();
+                      }
+                    }} style={{ marginBottom: '1rem' }}>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <input
+                          type="text"
+                          name="text"
+                          placeholder="Add a comment..."
+                          onFocus={() => !currentUser && setShowLoginModal(true)}
+                          required
+                          style={{ flex: 1, padding: '0.5em', borderRadius: '4px', border: '1px solid #ddd', fontSize: '0.9rem' }}
+                        />
+                        <button 
+                          type="submit"
+                          onClick={() => !currentUser && setShowLoginModal(true)}
+                          style={{ 
+                            background: 'var(--garnet)', 
+                            color: '#fff', 
+                            border: 'none', 
+                            borderRadius: '4px', 
+                            padding: '0.5em 1em', 
+                            cursor: 'pointer',
+                            fontSize: '0.9rem'
+                          }}
+                        >
+                          Comment
+                        </button>
+                      </div>
+                    </form>
+
+                    {/* Display Comments */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      {review.comments.map((comment) => (
+                        <div key={comment.id} style={{ padding: '0.8rem', borderLeft: '3px solid var(--garnet)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                            <strong style={{ color: 'var(--garnet)' }}>{comment.author}</strong>
+                            <span style={{ color: '#666', fontSize: '0.8rem' }}>{comment.date}</span>
+                          </div>
+                          <p style={{ margin: 0, fontSize: '0.9rem' }}>{comment.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+      
+      {/* Login Modal */}
+      {showLoginModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            background: 'white',
+            borderRadius: '12px',
+            padding: '2rem',
+            maxWidth: '400px',
+            width: '90%',
+            textAlign: 'center',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+          }}>
+            <h3 style={{ 
+              fontFamily: 'var(--serif)', 
+              color: 'var(--garnet)', 
+              marginBottom: '1rem',
+              fontSize: '1.5rem'
+            }}>
+              Sign In Required
+            </h3>
+            <p style={{ 
+              color: '#666', 
+              marginBottom: '2rem',
+              lineHeight: '1.5'
+            }}>
+              You need to be signed in to interact with reviews and comments.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+              <button 
+                onClick={() => {
+                  setShowLoginModal(false);
+                  navigate('/login');
+                }}
+                style={{
+                  background: 'var(--garnet)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '0.8em 1.5em',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s'
+                }}
+                onMouseOver={(e) => e.target.style.background = 'var(--garnet-dark)'}
+                onMouseOut={(e) => e.target.style.background = 'var(--garnet)'}
+              >
+                Log In
+              </button>
+              <button 
+                onClick={() => {
+                  setShowLoginModal(false);
+                  navigate('/signup');
+                }}
+                style={{
+                  background: 'transparent',
+                  color: 'var(--garnet)',
+                  border: '2px solid var(--garnet)',
+                  borderRadius: '8px',
+                  padding: '0.8em 1.5em',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s, color 0.2s'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = 'var(--garnet)';
+                  e.target.style.color = 'white';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = 'transparent';
+                  e.target.style.color = 'var(--garnet)';
+                }}
+              >
+                Sign Up
+              </button>
             </div>
-            <div style={{ textAlign: 'center', padding: '1rem' }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>👥</div>
-              <div style={{ fontWeight: 600, color: '#495057' }}>Environment</div>
-              <div style={{ color: '#6c757d', textTransform: 'capitalize' }}>
-                {dorm.attributes.environment}
-              </div>
-            </div>
-            <div style={{ textAlign: 'center', padding: '1rem' }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🍽️</div>
-              <div style={{ fontWeight: 600, color: '#495057' }}>Dining Proximity</div>
-              <div style={{ color: '#6c757d', textTransform: 'capitalize' }}>
-                {dorm.attributes.dining}
-              </div>
-            </div>
+            <button 
+              onClick={() => setShowLoginModal(false)}
+              style={{
+                background: 'transparent',
+                color: '#666',
+                border: 'none',
+                marginTop: '1rem',
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+            >
+              Cancel
+            </button>
           </div>
         </div>
+      )}
       </div>
     </div>
   );
@@ -684,32 +1084,62 @@ function QuizPage() {
 
 function HomePage() {
   const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
+  
   return (
-    <Hero>
+    <div>
       <Nav>
         <Logo>Swarthmore Dorm Explorer</Logo>
+        <div style={{ display: 'flex', gap: '1rem', marginRight: '2.5rem' }}>
+          {currentUser ? (
+            <>
+              <NavButton as={Link} to="/profile" style={{ background: 'transparent', color: 'var(--garnet)', border: '1px solid var(--garnet)' }}>
+                {currentUser.profile?.username || currentUser.displayName || 'Profile'}
+              </NavButton>
+              <NavButton onClick={logout} style={{ background: '#dc3545' }}>
+                Logout
+              </NavButton>
+            </>
+          ) : (
+            <>
+              <NavButton as={Link} to="/login" style={{ background: 'transparent', color: 'var(--garnet)', border: '1px solid var(--garnet)' }}>
+                Login
+              </NavButton>
+              <NavButton as={Link} to="/signup">
+                Sign Up
+              </NavButton>
+            </>
+          )}
+        </div>
       </Nav>
-      <HeroOverlay>
-        <HeroTitle> Welcome to Swarthmore Dorm Explorer</HeroTitle>
-        <HeroSubtitle>Your guide to every dorm at Swarthmore — floor plans, photos, vibes, and 360° tours.</HeroSubtitle>
-        <HeroButton as="button" onClick={() => navigate('/dorms')}>Explore Dorms</HeroButton>
-        <QuizButton as="button" onClick={() => navigate('/quiz')}>Find My Dorm</QuizButton>
-        <QuizExplanation>Find what dorm fits you best based on your preferences.</QuizExplanation>
-      </HeroOverlay>
-    </Hero>
+      <Hero>
+        <HeroOverlay>
+          <HeroTitle>Welcome to Swarthmore Dorm Explorer</HeroTitle>
+          <HeroSubtitle>Your guide to every dorm at Swarthmore — floor plans, photos, vibes, and 360° tours.</HeroSubtitle>
+          <HeroButton as="button" onClick={() => navigate('/dorms')}>Explore Dorms</HeroButton>
+          <QuizButton as="button" onClick={() => navigate('/quiz')}>Find My Dorm</QuizButton>
+          <QuizExplanation>Find what dorm fits you best based on your preferences.</QuizExplanation>
+        </HeroOverlay>
+      </Hero>
+    </div>
   );
 }
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/dorms" element={<DormsPage />} />
-        <Route path="/dorms/:slug" element={<DormDetailPage />} />
-        <Route path="/quiz" element={<QuizPage />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/dorms" element={<DormsPage />} />
+          <Route path="/dorms/:slug" element={<DormDetailPage />} />
+          <Route path="/quiz" element={<QuizPage />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<UserProfile />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
