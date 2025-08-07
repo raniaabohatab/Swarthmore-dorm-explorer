@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://raniaabohatab.github.io/Swarthmore-dorm-explorer",
+
   "scripts": {
     "dev": "vite",
     "build": "vite build",

@@ -1,35 +1,42 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
 # Swarthmore Dorm Explorer
 
-A web application to explore all Swarthmore College dorms.
+A comprehensive web application for exploring dormitories at Swarthmore College.
 
 ## Features
-- Browse all dorms with filters for amenities, accessibility, and location
-- Take a recommendation quiz to find your best dorm match
-- View 360° virtual tours for each dorm
-- Compare up to three dorms side-by-side
 
-## Tech Stack
-- Vite + React + TypeScript
-- Tailwind CSS for styling
-- Framer Motion for animations
-- PostgreSQL via Supabase for dorm data storage
-- Photo Sphere Viewer for 360° tours
-- Mobile-first and accessible UI
+- **Interactive Dorm Exploration**: Browse all Swarthmore dorms with detailed information
+- **Dorm Matching Quiz**: Find your perfect dorm based on preferences
+- **User Reviews & Comments**: Read and write reviews for each dorm
+- **Authentication System**: Sign up and log in to interact with reviews
+- **Responsive Design**: Works on desktop and mobile devices
 
-## Goals
-- Provide an engaging, student-friendly tool
-- Use clean, maintainable code
-- Optimize for performance and accessibility
+## Live Demo
+
+Visit the live application: [Swarthmore Dorm Explorer](https://raniaabohatab.github.io/Swarthmore-dorm-explorer)
+
+## Technology Stack
+
+- **Frontend**: React.js with Vite
+- **Styling**: Styled Components
+- **Authentication**: Firebase Authentication
+- **Database**: Firebase Firestore
+- **Deployment**: GitHub Pages
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start development server: `npm run dev`
+4. Build for production: `npm run build`
+
+## Dorm Information
+
+The app includes detailed information about all Swarthmore dorms including:
+- Room types and configurations
+- Amenities and features
+- Walking distances to key campus locations
+- User reviews and ratings
+
+## Contributing
+
+Feel free to contribute by adding reviews, improving the UI, or adding new features!
