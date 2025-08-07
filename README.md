@@ -40,3 +40,4 @@ The app includes detailed information about all Swarthmore dorms including:
 ## Contributing
 
 Feel free to contribute by adding reviews, improving the UI, or adding new features!
+Trigger redeploy
