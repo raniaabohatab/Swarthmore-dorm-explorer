@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import styled from 'styled-components'
 import parrishImg from './assets/parrish.webp';
@@ -439,7 +439,39 @@ function DormDetailPage() {
   });
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const addReview = (e) => {
+  // Load reviews from Firebase on component mount
+  useEffect(() => {
+    const loadReviews = async () => {
+      try {
+        // Try to load from Firebase first
+        const { collection, query, where, getDocs } = await import('firebase/firestore');
+        const { db } = await import('./firebase');
+        
+        const reviewsRef = collection(db, 'reviews');
+        const q = query(reviewsRef, where('dormSlug', '==', slug));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+          const firebaseReviews = [];
+          querySnapshot.forEach((doc) => {
+            const reviewData = doc.data();
+            firebaseReviews.push(reviewData);
+          });
+          setReviews(firebaseReviews);
+          localStorage.setItem(`reviews-${slug}`, JSON.stringify(firebaseReviews));
+        }
+      } catch (error) {
+        console.error('Error loading reviews from Firebase:', error);
+        // Keep localStorage data if Firebase fails
+      }
+    };
+    
+    if (slug) {
+      loadReviews();
+    }
+  }, [slug]);
+
+  const addReview = async (e) => {
     e.preventDefault();
     if (!currentUser) {
       setShowLoginModal(true);
@@ -457,10 +489,30 @@ function DormDetailPage() {
         dislikes: 0,
         comments: []
       };
-      const updatedReviews = [...reviews, review];
-      setReviews(updatedReviews);
-      localStorage.setItem(`reviews-${slug}`, JSON.stringify(updatedReviews));
-      setNewReview({ name: '', rating: '', comment: '' });
+      
+      try {
+        // Save to Firebase
+        const { doc, setDoc } = await import('firebase/firestore');
+        const { db } = await import('./firebase');
+        
+        const reviewRef = doc(db, 'reviews', `${slug}-${review.id}`);
+        await setDoc(reviewRef, {
+          ...review,
+          dormSlug: slug
+        });
+        
+        const updatedReviews = [...reviews, review];
+        setReviews(updatedReviews);
+        localStorage.setItem(`reviews-${slug}`, JSON.stringify(updatedReviews));
+        setNewReview({ name: '', rating: '', comment: '' });
+      } catch (error) {
+        console.error('Error saving review:', error);
+        // Fallback to localStorage if Firebase fails
+        const updatedReviews = [...reviews, review];
+        setReviews(updatedReviews);
+        localStorage.setItem(`reviews-${slug}`, JSON.stringify(updatedReviews));
+        setNewReview({ name: '', rating: '', comment: '' });
+      }
     }
   };
 
@@ -725,7 +777,7 @@ function DormDetailPage() {
                     )}
                     
                     {/* Add Comment Form */}
-                    <form onSubmit={(e) => {
+                    <form onSubmit={async (e) => {
                       e.preventDefault();
                       if (!currentUser) {
                         setShowLoginModal(true);
@@ -734,22 +786,56 @@ function DormDetailPage() {
                       const formData = new FormData(e.target);
                       const text = formData.get('text');
                       if (text.trim()) {
-                        const updatedReviews = reviews.map(r => 
-                          r.id === review.id 
-                            ? { 
-                                ...r, 
-                                comments: [...r.comments, {
-                                  id: Date.now(),
-                                  author: currentUser.profile?.username || currentUser.displayName || currentUser.email,
-                                  text: text,
-                                  date: new Date().toLocaleDateString()
-                                }]
-                              } 
-                            : r
-                        );
-                        setReviews(updatedReviews);
-                        localStorage.setItem(`reviews-${slug}`, JSON.stringify(updatedReviews));
-                        e.target.reset();
+                        try {
+                          const newComment = {
+                            id: Date.now(),
+                            author: currentUser.profile?.username || currentUser.displayName || currentUser.email,
+                            text: text,
+                            date: new Date().toLocaleDateString(),
+                            userId: currentUser.uid
+                          };
+                          
+                          const updatedReviews = reviews.map(r => 
+                            r.id === review.id 
+                              ? { 
+                                  ...r, 
+                                  comments: [...r.comments, newComment]
+                                } 
+                              : r
+                          );
+                          
+                          // Save to Firebase
+                          const { doc, updateDoc, arrayUnion } = await import('firebase/firestore');
+                          const { db } = await import('./firebase');
+                          
+                          const reviewRef = doc(db, 'reviews', `${slug}-${review.id}`);
+                          await updateDoc(reviewRef, {
+                            comments: arrayUnion(newComment)
+                          });
+                          
+                          setReviews(updatedReviews);
+                          localStorage.setItem(`reviews-${slug}`, JSON.stringify(updatedReviews));
+                          e.target.reset();
+                        } catch (error) {
+                          console.error('Error adding comment:', error);
+                          // Fallback to localStorage if Firebase fails
+                          const updatedReviews = reviews.map(r => 
+                            r.id === review.id 
+                              ? { 
+                                  ...r, 
+                                  comments: [...r.comments, {
+                                    id: Date.now(),
+                                    author: currentUser.profile?.username || currentUser.displayName || currentUser.email,
+                                    text: text,
+                                    date: new Date().toLocaleDateString()
+                                  }]
+                                } 
+                              : r
+                          );
+                          setReviews(updatedReviews);
+                          localStorage.setItem(`reviews-${slug}`, JSON.stringify(updatedReviews));
+                          e.target.reset();
+                        }
                       }
                     }} style={{ marginBottom: '1rem' }}>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
